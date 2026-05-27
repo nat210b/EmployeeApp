@@ -1,0 +1,125 @@
+<section class="row g-3 g-lg-4 mb-4">
+  <div class="col-md-4">
+    <div class="metric-card">
+      <span class="metric-icon bg-primary-subtle text-primary">
+        <i class="bi bi-person-lines-fill"></i>
+      </span>
+      <div>
+        <p class="metric-label">Employees</p>
+        <strong class="metric-value">{{ service.list.length }}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="metric-card">
+      <span class="metric-icon bg-success-subtle text-success">
+        <i class="bi bi-briefcase-fill"></i>
+      </span>
+      <div>
+        <p class="metric-label">Roles tracked</p>
+        <strong class="metric-value">{{ roleCount }}</strong>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="metric-card">
+      <span class="metric-icon bg-warning-subtle text-warning-emphasis">
+        <i class="bi bi-envelope-check-fill"></i>
+      </span>
+      <div>
+        <p class="metric-label">Contact ready</p>
+        <strong class="metric-value">{{ contactReadyCount }}</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row g-4 align-items-start">
+  <div class="col-lg-5 col-xl-4">
+    <div class="card app-card sticky-lg-top form-panel">
+      <div class="card-body p-4">
+        <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+          <div>
+            <p class="section-kicker mb-1">Employee profile</p>
+            <h2 class="panel-title mb-0">
+              {{ service.formData.id === 0 ? 'Add a teammate' : 'Edit employee' }}
+            </h2>
+          </div>
+          <span class="status-badge">
+            <i class="bi" [class.bi-plus-lg]="service.formData.id === 0" [class.bi-pencil-square]="service.formData.id !== 0"></i>
+            {{ service.formData.id === 0 ? 'New' : 'Editing' }}
+          </span>
+        </div>
+
+        <app-employee-form />
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7 col-xl-8">
+    <div class="directory-toolbar">
+      <div>
+        <p class="section-kicker mb-1">Directory</p>
+        <h2 class="panel-title mb-0">Employee list</h2>
+      </div>
+      <span class="badge rounded-pill text-bg-light border px-3 py-2">
+        {{ service.list.length }} total
+      </span>
+    </div>
+
+    @if (service.list.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="bi bi-people"></i>
+        </div>
+        <h3>No employees yet</h3>
+        <p>Add the first profile and it will appear here for quick review.</p>
+      </div>
+    } @else {
+      <div class="employee-grid">
+        @for (employee of service.list; track employee.id) {
+          <article class="card app-card employee-card">
+            <div class="card-body p-4">
+              <div class="d-flex align-items-start justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-3 min-w-0">
+                  <div class="avatar-circle">
+                    {{ employee.firstName ? employee.firstName.charAt(0).toUpperCase() : '?' }}
+                  </div>
+                  <div class="min-w-0">
+                    <h3 class="employee-name text-truncate mb-1">
+                      {{ employee.firstName || 'Unnamed' }} {{ employee.lastName }}
+                    </h3>
+                    <p class="employee-role mb-0">
+                      <i class="bi bi-briefcase me-1"></i>
+                      {{ employee.position || 'Position not set' }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="btn-group action-group" role="group" aria-label="Employee actions">
+                  <button type="button" class="btn btn-light icon-btn" title="Edit employee" (click)="populateForm(employee)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button type="button" class="btn btn-light icon-btn text-danger" title="Delete employee" (click)="onDelete(employee.id)">
+                    <i class="bi bi-trash3"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="contact-row">
+                <span class="contact-chip">
+                  <i class="bi bi-envelope"></i>
+                  {{ employee.email || 'No email' }}
+                </span>
+                <span class="contact-chip">
+                  <i class="bi bi-telephone"></i>
+                  {{ employee.phone || 'No phone' }}
+                </span>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+</section>

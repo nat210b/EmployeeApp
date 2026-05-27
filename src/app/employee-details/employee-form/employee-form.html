@@ -1,0 +1,97 @@
+<form #form="ngForm" (submit)="onSubmit(form)" novalidate>
+  <input type="hidden" [(ngModel)]="service.formData.id" name="id">
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label" for="firstName">First name</label>
+      <input
+        type="text"
+        class="form-control form-control-lg"
+        id="firstName"
+        #firstName="ngModel"
+        [(ngModel)]="service.formData.firstName"
+        name="firstName"
+        placeholder="Maya"
+        required
+        [class.is-invalid]="firstName.invalid && (firstName.touched || form.submitted)"
+      >
+      @if (firstName.invalid && (firstName.touched || form.submitted)) {
+        <div class="invalid-feedback">First name is required.</div>
+      }
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label" for="lastName">Last name</label>
+      <input
+        type="text"
+        class="form-control form-control-lg"
+        id="lastName"
+        [(ngModel)]="service.formData.lastName"
+        name="lastName"
+        placeholder="Chen"
+      >
+    </div>
+
+    <div class="col-12">
+      <label class="form-label" for="position">Position</label>
+      <div class="input-group input-group-lg">
+        <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
+        <input
+          type="text"
+          class="form-control"
+          id="position"
+          [(ngModel)]="service.formData.position"
+          name="position"
+          placeholder="Product Manager"
+        >
+      </div>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label" for="email">Email</label>
+      <div class="input-group input-group-lg">
+        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          #email="ngModel"
+          [(ngModel)]="service.formData.email"
+          name="email"
+          placeholder="maya@company.com"
+          email
+          [class.is-invalid]="email.invalid && (email.touched || form.submitted)"
+        >
+        @if (email.invalid && (email.touched || form.submitted)) {
+          <div class="invalid-feedback">Enter a valid email address.</div>
+        }
+      </div>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label" for="phone">Phone</label>
+      <div class="input-group input-group-lg">
+        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+        <input
+          type="tel"
+          class="form-control"
+          id="phone"
+          [(ngModel)]="service.formData.phone"
+          name="phone"
+          placeholder="+1 555 0148"
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="d-grid d-sm-flex gap-2 justify-content-sm-end mt-4">
+    <button class="btn btn-outline-secondary btn-lg" type="button" (click)="resetForm(form)">
+      <i class="bi bi-arrow-counterclockwise me-1"></i>
+      Reset
+    </button>
+    <button class="btn btn-primary btn-lg" type="submit">
+      <i class="bi me-1" [class.bi-plus-lg]="service.formData.id === 0" [class.bi-check2]="service.formData.id !== 0"></i>
+      {{ service.formData.id === 0 ? 'Save employee' : 'Update employee' }}
+    </button>
+  </div>
+</form>
